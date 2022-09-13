@@ -1,0 +1,21 @@
+{
+  "name": "amos/site-management",
+  "description": "Site Management",
+  "keywords": [
+    "yii2",
+    "site",
+    "management"
+  ],
+  "type": "plugin",
+  "proscription": "BSD-3-Clause",
+  "require": {
+    "php": ">=5.6.0",
+    "open20/amos-admin": "~2.0",
+    "open20/amos-core": "~1.9.40"
+  },
+  "autoload": {
+    "psr-4": {
+      "amos\\sitemanagement\\": "src"
+    }
+  }
+}
