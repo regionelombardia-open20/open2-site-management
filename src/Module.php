@@ -95,9 +95,47 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface, 
      */
     public $enableUploadVideoSlider = true;
     /**
+     * Switch for all secondary image/video fileds rendering
+     * 
      * @var bool
      */
     public $enableTextSlider = true;
+
+    /**
+     * Secondary fields are configurables
+     * for now only the rendering in the form
+     *
+     * @var array
+     */
+    public $secondaryImagesFieldListConfiguration = [
+        'link' => [
+            'render' => true,
+        ],
+        'text_position' => [
+            'render' => true,
+        ],
+        'description' => [
+            'render' => true,
+        ],
+    ];
+
+    /**
+     * Secondary fields are configurables
+     * for now only the rendering in the form
+     *
+     * @var array
+     */
+    public $secondaryVideosFieldListConfiguration = [
+        'link' => [
+            'render' => true,
+        ],
+        'text_position' => [
+            'render' => true,
+        ],
+        'description' => [
+            'render' => true,
+        ],
+    ];
 
     /**
      * @var array
@@ -186,32 +224,6 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface, 
     public static function beginCreateNewSessionKeyDateTime()
     {
         return 'beginCreateNewUrlDateTime_' . self::getModuleName();
-    }
-    
-    /**
-     * @return string
-     */
-    public static function externalPreviousUrlSessionKey()
-    {
-        return 'externalPreviousUrlSessionKey_' . self::getModuleName();
-    }
-    
-    /**
-     * @return string
-     */
-    public static function externalPreviousTitleSessionKey()
-    {
-        return 'externalPreviousTitleSessionKey_' . self::getModuleName();
-    }
-    
-    /**
-     * @param string $previousUrl
-     * @param string $previousTitle
-     */
-    public static function setExternalPreviousSessionKeys($previousUrl, $previousTitle)
-    {
-        \Yii::$app->session->set(self::externalPreviousTitleSessionKey(), $previousTitle);
-        \Yii::$app->session->set(self::externalPreviousUrlSessionKey(), $previousUrl);
     }
 
     /**

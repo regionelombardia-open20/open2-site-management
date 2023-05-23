@@ -6,6 +6,7 @@ use open20\amos\core\forms\CloseSaveButtonWidget;
 use open20\amos\core\forms\Tabs;
 use kartik\select2\Select2;
 use open20\amos\attachments\components\CropInput;
+use yii\helpers\VarDumper;
 
 /**
  * @var yii\web\View $this
@@ -15,6 +16,8 @@ use open20\amos\attachments\components\CropInput;
 $module = \Yii::$app->getModule('sitemanagement');
 $enableUploadVideoSlider = $module->enableUploadVideoSlider;
 $enableTextSlider = $module->enableTextSlider;
+$secImagesFields = $module->secondaryImagesFieldListConfiguration;
+$secVideosFields = $module->secondaryVideosFieldListConfiguration;
 $videoType = \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO;
 $js = <<<JS
 
@@ -90,29 +93,6 @@ $tipoElemento = $_GET['slider_type'];
         ?>
 
         <div class="col-lg-3 col-sm-3" style="<?= $displaynone?>">
-            <?php
-            $data = [];
-
-            if ($onlyImages) {
-                $data = [
-                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
-                        'Immagine')
-                ];
-            } else if ($onlyVideos) {
-                $data = [
-                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
-                            'Video')
-                ];
-            } else {
-                $data = [
-                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
-                        'Immagine'),
-                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
-                        'Video'),
-                ];
-            }
-
-            ?>
             <?=
             $form->field($model, 'type')->widget(Select2::className(),
                 [
@@ -120,7 +100,12 @@ $tipoElemento = $_GET['slider_type'];
                         'id' => 'type-elem',
                         'placeholder' => Module::t('amossitemanagement', 'Select...')
                     ],
-                    'data' => $data,
+                    'data' => [
+                        \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
+                            'Immagine'),
+                        \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
+                            'Video'),
+                    ],
 //                'pluginOptions' =>[
 //                        'allowClear' => true
 //                ]
@@ -209,9 +194,114 @@ $tipoElemento = $_GET['slider_type'];
         <?php } ?>
     </div>
 
-    <?php if ($enableTextSlider) { ?>
+    <?php 
+// SE TIPO IMMAGINE
+if ($tipoElemento == 1):  
+    
+    if ($enableTextSlider) { ?>
         <hr>
+            <?php
+                if (isset($secImagesFields['link']['render']) && $secImagesFields['link']['render']):
+            ?>
+        <div class="col-lg-6 col-sm-12">
+            <?= $form->field($model, 'link')->textInput() ?>
+        </div>
+            <?php
+                endif;
+            ?>
 
+            <?php
+                if (isset($secImagesFields['text_position']['render']) && $secImagesFields['text_position']['render']):
+            ?>
+        <div class="col-lg-6 col-sm-12">
+            <?=
+            $form->field($model, 'text_position')->widget(Select2::className(),
+                [
+                    'data' => $model->getAllTextPositionLabel(),
+                    'options' => ['placeholder' => Module::t('amossitemanagement', 'Select...')]
+                ])
+            ?>
+        </div>
+            <?php
+                endif;
+            ?>
+
+            <?php
+                if (isset($secImagesFields['description']['render']) && $secImagesFields['description']['render']):
+            ?>
+        <div class="col-lg-12 col-sm-12">
+            <?=
+            $form->field($model, 'description')->widget(\open20\amos\core\forms\TextEditorWidget::className(),
+                [
+                    'clientOptions' => [
+                        'lang' => substr(Yii::$app->language, 0, 2)
+                    ]
+                ])
+            ?>
+
+            <?php
+                endif;
+            ?>
+        </div>
+    <?php 
+    }; 
+// SE  di tipo VIDEO
+elseif($tipoElemento == 2):
+    
+    if ($enableTextSlider) { 
+    ?>
+        <hr>
+            <?php
+                if (isset($secVideosFields['link']['render']) && $secVideosFields['link']['render']):
+            ?>
+        <div class="col-lg-6 col-sm-12">
+            <?= $form->field($model, 'link')->textInput() ?>
+        </div>
+            <?php
+                endif;
+            ?>
+
+            <?php
+                if (isset($secVideosFields['text_position']['render']) && $secVideosFields['text_position']['render']):
+            ?>
+        <div class="col-lg-6 col-sm-12">
+            <?=
+            $form->field($model, 'text_position')->widget(Select2::className(),
+                [
+                    'data' => $model->getAllTextPositionLabel(),
+                    'options' => ['placeholder' => Module::t('amossitemanagement', 'Select...')]
+                ])
+            ?>
+        </div>
+            <?php
+                endif;
+            ?>
+
+            <?php
+                if (isset($secVideosFields['description']['render']) && $secVideosFields['description']['render']):
+            ?>
+        <div class="col-lg-12 col-sm-12">
+            <?=
+            $form->field($model, 'description')->widget(\open20\amos\core\forms\TextEditorWidget::className(),
+                [
+                    'clientOptions' => [
+                        'lang' => substr(Yii::$app->language, 0, 2)
+                    ]
+                ])
+            ?>
+
+            <?php
+                endif;
+            ?>
+        </div>
+    <?php }; 
+
+// nel caso non sia stata passata la tipologia di slider non è possibile gestire la casistica e vengono proposti tutti i campi
+// come era prima... 
+else:
+
+if ($enableTextSlider) { ?>
+        <hr>
         <div class="col-lg-6 col-sm-12">
             <?= $form->field($model, 'link')->textInput() ?>
         </div>
@@ -234,7 +324,11 @@ $tipoElemento = $_GET['slider_type'];
                 ])
             ?>
         </div>
-    <?php } ?>
+    <?php 
+    }; 
+
+endif;
+?>
 
     <div class="clearfix"></div>
     <?php $this->endBlock('generale'); ?>

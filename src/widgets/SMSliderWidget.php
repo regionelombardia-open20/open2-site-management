@@ -61,6 +61,8 @@ class SMSliderWidget extends Widget
      */
     private $viewPath;
 
+    public $crop = 'social';
+
     /**
      * @throws SiteManagementException
      */
@@ -169,7 +171,7 @@ class SMSliderWidget extends Widget
      * @return string|boolean the rendering result of the section, or false if the named section is not supported.
      */
     public function renderSlider($slider) {
-        return $this->render($this->viewPath, ['slider' => $slider, 'optionsVideo' => $this->optionsVideo, 'optionsImg' => $this->optionsImg, 'key' => $this->sliderId]);
+        return $this->render($this->viewPath, ['slider' => $slider, 'optionsVideo' => $this->optionsVideo, 'optionsImg' => $this->optionsImg, 'key' => $this->sliderId, 'crop' => $this->crop]);
     }
 
     /**

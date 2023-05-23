@@ -35,13 +35,6 @@ return [
     'Site Management' => 'Site Management',
     'Tag' => 'Tag',
     'Type' => 'Type',
-    '#add_elements' => 'Add element',
-    'Videos' => 'Videos',
-    'Images' => 'Images',
-    'Community not is set' => 'Community not is set',
-    'Unable to create slider' => 'Unable to create slider',
-    'Add image' => 'Add image',
-    'Add video' => 'Add video',
-    'Slider Video' => 'Video slider',
-    'Slider immagini' => 'Image slider',
+    '#add_elements' => 'Add element'
+
 ];

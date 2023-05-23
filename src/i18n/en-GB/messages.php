@@ -39,13 +39,5 @@ return [
     '#preview'=> 'Preview',
     '#modify_pubblication' => 'Modify pubblication',
     '#next' => 'Next',
-    '#prev' => 'Previous',
-    'Videos' => 'Videos',
-    'Images' => 'Images',
-    'Community not is set' => 'Community not is set',
-    'Unable to create slider' => 'Unable to create slider',
-    'Add image' => 'Add image',
-    'Add video' => 'Add video', 
-    'Slider Video' => 'Video slider',
-    'Slider immagini' => 'Image slider',
+    '#prev' => 'Previous'
 ];

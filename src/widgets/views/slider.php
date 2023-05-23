@@ -35,7 +35,7 @@ $sliderElements = $slider->getSliderElems()->orderBy('order ASC')->all();
                         $active = true;
                     }
                     if($element->type == SiteManagementSliderElem::TYPE_IMG){
-                        echo $this->render('_item_image', ['element' => $element, 'active' => $active]);
+                        echo $this->render('_item_image', ['element' => $element, 'active' => $active, 'crop' => $crop]);
                     } else {
                         echo $this->render('_item_video', ['element' => $element, 'active' => $active, 'optionsVideo' => $optionsVideo]);
                     }

@@ -5,7 +5,7 @@
 ?>
 <div class="item item-image <?= $active ? "active" : "" ?>">
     <div class="item-overlay"></div>
-    <img src="<?= (!empty($element->getFileImage())? $element->getFileImage()->getWebUrl() : "") ?>" alt="" style="width:100%;">
+    <img src="<?= (!empty($element->getFileImage())? $element->getFileImage()->getWebUrl($crop, false, true) : "") ?>" alt="" style="width:100%;">
     <div class="carousel-caption <?= !empty($element->text_position) ? 'carousel-caption-grid-3 ' . $element->getTexPositionClasses() : '' ?>">
         <?php if (!empty($element->link)) { ?>
             <?php if (!empty($element->title)) { ?>
