@@ -10,8 +10,16 @@
  */
 
 return [
+    'Add metadata' => 'Aggiungi metadata',
     'Add page content' => 'Aggiungi contenuto pagina',
+    'Content' => 'Contenuto',
+    'HTML' => 'HTML',
     'ID' => 'ID',
+    'Key' => 'Chiave',
+    'Metadata' => 'Metadata',
+    'Metadata Type' => 'Tipo di metadata',
+    'Metadata Type Id' => 'Tipo di metadata',
+    'Open Graph (social)' => 'Open Graph (social)',
     '#page_content_singular' => 'contenuto pagina',
     '#page_content_plural' => 'contenuti pagina',
     '#page_content_article_singular' => 'il',
@@ -20,8 +28,11 @@ return [
     'Page Content' => 'Contenuto Pagina',
     'Page Contents' => 'Contenuti Pagina',
     'Page Title' => 'Titolo Pagina',
+    'Search by content' => 'Cerca per contenuto',
+    'Search by key' => 'Cerca per chiave',
     'Search by tag' => 'Cerca per tag',
     'Search by title' => 'Cerca per titolo',
     'Site Management' => 'Gestione Sito',
     'Tag' => 'Tag',
+    'Type' => 'Tipo',
 ];

@@ -5,21 +5,24 @@
  * OPEN 2.0
  *
  *
- * @package    amos\sitemanagement\views\page-content
+ * @package    amos\sitemanagement\views\metadata
  * @category   CategoryName
  */
 
+use amos\sitemanagement\models\MetadataType;
 use amos\sitemanagement\Module;
 use open20\amos\core\forms\ActiveForm;
 use open20\amos\core\forms\CloseSaveButtonWidget;
 use open20\amos\core\forms\CreatedUpdatedWidget;
+use open20\amos\core\forms\editors\Select;
 use open20\amos\core\forms\RequiredFieldsTipWidget;
 use open20\amos\core\forms\Tabs;
-use yii\redactor\widgets\Redactor;
+use open20\amos\core\utilities\ArrayUtility;
+use yii\helpers\ArrayHelper;
 
 /**
  * @var yii\web\View $this
- * @var amos\sitemanagement\models\PageContent $model
+ * @var amos\sitemanagement\models\Metadata $model
  * @var yii\widgets\ActiveForm $form
  */
 
@@ -46,20 +49,27 @@ $idTabCard = 'tab-card';
     <?php $this->beginBlock($idTabCard); ?>
     <div class="row">
         <div class="col-lg-6 col-sm-6">
-            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'metadata_type_id')->widget(Select::className(), [
+                'data' => ArrayUtility::translateArrayValues(ArrayHelper::map(MetadataType::find()->asArray()->all(), 'id', 'type'), 'amossitemanagement'),
+                'options' => [
+                    'lang' => substr(Yii::$app->language, 0, 2),
+                    'multiple' => false,
+                    'placeholder' => Module::t('amoscore', 'Select/Choose') . '...',
+                    'data-model' => 'metadata_type',
+                    'data-field' => 'type'
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ]
+            ]) ?>
         </div>
         <div class="col-lg-6 col-sm-6">
-            <?= $form->field($model, 'tag')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'key_value')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <?= $form->field($model, 'content')->widget(Redactor::className(), [
-                'clientOptions' => [
-                    'plugins' => ['clips', 'fontcolor', 'imagemanager'],
-                    'lang' => substr(Yii::$app->language, 0, 2)
-                ]
-            ]) ?>
+            <?= $form->field($model, 'content')->textarea(['rows' => 4]) ?>
         </div>
     </div>
     <div class="clearfix"></div>

@@ -11,7 +11,9 @@
 
 namespace amos\sitemanagement;
 
+use amos\sitemanagement\utility\SiteManagementUtility;
 use amos\sitemanagement\widgets\icons\WidgetIconSiteManagementDashboard;
+use amos\sitemanagement\widgets\icons\WidgetIconSiteManagementMetadata;
 use amos\sitemanagement\widgets\icons\WidgetIconSiteManagementPageContent;
 use open20\amos\core\module\AmosModule;
 use open20\amos\core\module\ModuleInterface;
@@ -65,6 +67,7 @@ class Module extends AmosModule implements ModuleInterface
         return [
             WidgetIconSiteManagementDashboard::className(),
             WidgetIconSiteManagementPageContent::className(),
+            WidgetIconSiteManagementMetadata::className(),
         ];
     }
 
@@ -83,7 +86,10 @@ class Module extends AmosModule implements ModuleInterface
     {
         return [
             'PageContent' => __NAMESPACE__ . '\\' . 'models\PageContent',
-            'PageContentSearch' => __NAMESPACE__ . '\\' . 'models\search\PageContentSearch'
+            'Metadata' => __NAMESPACE__ . '\\' . 'models\Metadata',
+            'MetadataType' => __NAMESPACE__ . '\\' . 'models\MetadataType',
+            'PageContentSearch' => __NAMESPACE__ . '\\' . 'models\search\PageContentSearch',
+            'MetadataSearch' => __NAMESPACE__ . '\\' . 'models\search\MetadataSearch'
         ];
     }
 
@@ -105,5 +111,13 @@ class Module extends AmosModule implements ModuleInterface
     public static function beginCreateNewSessionKeyDateTime()
     {
         return 'beginCreateNewUrlDateTime_' . self::getModuleName();
+    }
+
+    /**
+     * This method register the metadata in the application.
+     */
+    public function registerMetadata()
+    {
+        SiteManagementUtility::registerMetadata();
     }
 }

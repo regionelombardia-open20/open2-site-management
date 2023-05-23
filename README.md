@@ -21,19 +21,7 @@ or add this row
 to the require section of your `composer.json` file.
 
 
-### 2. Add module to your main config in backend:
-	
-```php
-<?php
-'modules' => [
-    'sitemanagement' => [
-        'class' => 'amos\sitemanagement\Module',
-    ],
-],
-```
-
-
-### 3. Apply migrations
+### 2. Apply migrations
 
 ```bash
 php yii migrate/up --migrationPath=@vendor/amos/site-management/src/migrations
@@ -46,4 +34,31 @@ or add this row to your migrations config in console:
 return [
     '@vendor/amos/site-management/src/migrations',
 ];
+```
+
+
+### 3. Backend configuration
+To enable the plugin in backend add this configuration in backend/config/modules-amos.php file or in your main-local.php file. 
+	
+```php
+<?php
+'modules' => [
+    'sitemanagement' => [
+        'class' => 'amos\sitemanagement\Module',
+    ],
+],
+```
+
+
+### 4. Frontend configuration
+In frontend the plugin must be enabled to ensure the metadata registration.
+To enable the plugin in frontend add this configuration in frontend/config/modules-amos.php file or in your main-local.php file. 
+	
+```php
+<?php
+'modules' => [
+    'sitemanagement' => [
+        'class' => 'amos\sitemanagement\Module',
+    ],
+],
 ```

@@ -15,7 +15,10 @@ return [
         'searchParams' => [
             'page-content' => [
                 'enable' => true
-            ]
+            ],
+            'metadata' => [
+                'enable' => true
+            ],
         ]
     ]
 ];
