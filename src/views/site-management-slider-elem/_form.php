@@ -66,12 +66,12 @@ $this->registerJs($js);
 $tipoElemento = $_GET['slider_type'];
 ?>
 
-<div class="site-management-slider-elem-form col-xs-12 nop">
+<div class="site-management-slider-elem-form row">
 
     <?php $form = ActiveForm::begin(); ?>
     <?php $this->beginBlock('generale'); ?>
 
-    <div class="col-lg-12 col-sm-12 m-t-30">
+    <div class="col-sm-12 m-t-10">
         <strong><?= \Yii::t('app', 'Galleria immagini').': ' ?></strong>
         <?= $slider->title ?>
     </div>
@@ -94,6 +94,29 @@ $tipoElemento = $_GET['slider_type'];
         ?>
 
         <div class="col-lg-3 col-sm-3" style="<?= $displaynone?>">
+            <?php
+            $data = [];
+
+            if ($onlyImages) {
+                $data = [
+                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
+                        'Immagine')
+                ];
+            } else if ($onlyVideos) {
+                $data = [
+                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
+                            'Video')
+                ];
+            } else {
+                $data = [
+                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
+                        'Immagine'),
+                    \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
+                        'Video'),
+                ];
+            }
+
+            ?>
             <?=
             $form->field($model, 'type')->widget(Select2::className(),
                 [
@@ -101,12 +124,7 @@ $tipoElemento = $_GET['slider_type'];
                         'id' => 'type-elem',
                         'placeholder' => Module::t('amossitemanagement', 'Select...')
                     ],
-                    'data' => [
-                        \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_IMG => Module::t('amossitemanagement',
-                            'Immagine'),
-                        \amos\sitemanagement\models\SiteManagementSliderElem::TYPE_VIDEO => Module::t('amossitemanagement',
-                            'Video'),
-                    ],
+                    'data' => $data,
 //                'pluginOptions' =>[
 //                        'allowClear' => true
 //                ]
@@ -352,6 +370,7 @@ endif;
         ]
     );
     ?>
+    <div class="col-xs-12">
     <?=
     CloseSaveButtonWidget::widget([
         'model' => $model,
@@ -360,4 +379,5 @@ endif;
     ]);
     ?>
     <?php ActiveForm::end(); ?>
+    </div>
 </div>

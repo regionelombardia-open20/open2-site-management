@@ -225,6 +225,32 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface, 
     {
         return 'beginCreateNewUrlDateTime_' . self::getModuleName();
     }
+    
+    /**
+     * @return string
+     */
+    public static function externalPreviousUrlSessionKey()
+    {
+        return 'externalPreviousUrlSessionKey_' . self::getModuleName();
+    }
+    
+    /**
+     * @return string
+     */
+    public static function externalPreviousTitleSessionKey()
+    {
+        return 'externalPreviousTitleSessionKey_' . self::getModuleName();
+    }
+    
+    /**
+     * @param string $previousUrl
+     * @param string $previousTitle
+     */
+    public static function setExternalPreviousSessionKeys($previousUrl, $previousTitle)
+    {
+        \Yii::$app->session->set(self::externalPreviousTitleSessionKey(), $previousTitle);
+        \Yii::$app->session->set(self::externalPreviousUrlSessionKey(), $previousUrl);
+    }
 
     /**
      * This method register the metadata in the application.

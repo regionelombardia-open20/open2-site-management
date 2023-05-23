@@ -18,7 +18,13 @@ if($tipoElemento == 1) {
 } else {
     $this->title = (!empty($getTitle))? $getTitle: Yii::t('amossitemanagement', 'Create slider element') . ' "' . $slider->title . '"';
 }
-$this->params['breadcrumbs'][] = ['label' => Module::t('amossitemanagement', 'Site Management Slider Elem'), 'url' => ['index']];
+$externalSessionPreviousUrl = Yii::$app->session->get(Module::externalPreviousUrlSessionKey());
+$externalSessionPreviousTitle = Yii::$app->session->get(Module::externalPreviousTitleSessionKey());
+if (!is_null($externalSessionPreviousUrl)) {
+    $this->params['breadcrumbs'][] = ['label' => $externalSessionPreviousTitle, 'url' => $externalSessionPreviousUrl];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => Module::t('amossitemanagement', 'Site Management Slider Elem'), 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-management-slider-elem-create">
@@ -28,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'files' => $files,
         'useCrop' => $useCrop,
         'ratioCrop' => $ratioCrop,
+        'onlyImages' => $onlyImages,
+        'onlyVideos' => $onlyVideos,
     ]) ?>
 
 </div>

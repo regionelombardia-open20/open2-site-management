@@ -2,6 +2,7 @@
 
 namespace amos\sitemanagement\models\base;
 
+use amos\sitemanagement\Module;
 use Yii;
 
 /**
@@ -57,20 +58,20 @@ class SiteManagementSliderElem extends \open20\amos\core\record\Record
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('amossitemanagement', 'ID'),
-            'slider_id' => Yii::t('amossitemanagement', 'Slider'),
-            'title' => Yii::t('amossitemanagement', 'Title'),
-            'description' => Yii::t('amossitemanagement', 'Description'),
-            'type' => Yii::t('amossitemanagement', 'Type'),
-            'url_video' => Yii::t('amossitemanagement', 'Url video'),
-            'text_position' => Yii::t('amossitemanagement', 'Text position'),
-            'order' => Yii::t('amossitemanagement', 'Ordinamento'),
-            'created_at' => Yii::t('amossitemanagement', 'Created at'),
-            'updated_at' => Yii::t('amossitemanagement', 'Updated at'),
-            'deleted_at' => Yii::t('amossitemanagement', 'Deleted at'),
-            'created_by' => Yii::t('amossitemanagement', 'Created by'),
-            'updated_by' => Yii::t('amossitemanagement', 'Updated at'),
-            'deleted_by' => Yii::t('amossitemanagement', 'Deleted at'),
+            'id' => Module::t('amossitemanagement', 'ID'),
+            'slider_id' => Module::t('amossitemanagement', 'Slider'),
+            'title' => Module::t('amossitemanagement', 'Title'),
+            'description' => Module::t('amossitemanagement', 'Description'),
+            'type' => Module::t('amossitemanagement', 'Type'),
+            'url_video' => Module::t('amossitemanagement', 'Url video'),
+            'text_position' => Module::t('amossitemanagement', 'Text position'),
+            'order' => Module::t('amossitemanagement', 'Ordinamento'),
+            'created_at' => Module::t('amossitemanagement', 'Created at'),
+            'updated_at' => Module::t('amossitemanagement', 'Updated at'),
+            'deleted_at' => Module::t('amossitemanagement', 'Deleted at'),
+            'created_by' => Module::t('amossitemanagement', 'Created by'),
+            'updated_by' => Module::t('amossitemanagement', 'Updated at'),
+            'deleted_by' => Module::t('amossitemanagement', 'Deleted at'),
         ];
     }
     /**

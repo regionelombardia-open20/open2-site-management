@@ -101,7 +101,7 @@ class SiteManagementSliderElemController extends CrudController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $slider_type = null)
+    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $slider_type = null, $onlyImages = false, $onlyVideos = false)
     {
         $module = \Yii::$app->getModule('sitemanagement');
         $this->setUpLayout("form");
@@ -153,6 +153,8 @@ class SiteManagementSliderElemController extends CrudController
                         'files' => $files,
                         'useCrop' => $useCrop,
                         'ratioCrop' => $ratioCrop,
+                        'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
                 ]);
             }
         } else {
@@ -163,6 +165,8 @@ class SiteManagementSliderElemController extends CrudController
                     'files' => $files,
                     'useCrop' => $useCrop,
                     'ratioCrop' => $ratioCrop,
+                    'onlyImages' => $onlyImages,
+                    'onlyVideos' => $onlyVideos,
             ]);
         }
     }
@@ -212,7 +216,7 @@ class SiteManagementSliderElemController extends CrudController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null)
+    public function actionUpdate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $onlyImages = false, $onlyVideos = false)
     {
         $files  = [];
         $module = \Yii::$app->getModule('sitemanagement');
@@ -247,6 +251,8 @@ class SiteManagementSliderElemController extends CrudController
                         'files' => $files,
                         'useCrop' => $useCrop,
                         'ratioCrop' => $ratioCrop,
+                        'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
                 ]);
             }
         } else {
@@ -257,6 +263,8 @@ class SiteManagementSliderElemController extends CrudController
                     'files' => $files,
                     'useCrop' => $useCrop,
                     'ratioCrop' => $ratioCrop,
+                    'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
             ]);
         }
     }
