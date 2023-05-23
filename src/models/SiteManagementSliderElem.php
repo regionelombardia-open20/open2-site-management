@@ -150,10 +150,23 @@ class SiteManagementSliderElem extends \amos\sitemanagement\models\base\SiteMana
     }
 
     /**
-     * @return string
+     * @param $url
+     * @return mixed
      */
-    public function getUrlEmbeddedVideo(){
+    public static function getUrlEmbedVideoStatic($url){
+        $elem = new SiteManagementSliderElem();
+        return $elem->getUrlEmbeddedVideo($url);
+    }
+
+    /**
+     * @param null $urlVideo
+     * @return null|string|string[]
+     */
+    public function getUrlEmbeddedVideo($urlVideo = null){
         $url = $this->url_video;
+        if(!empty($urlVideo)){
+            $url = $urlVideo;
+        }
         $url = preg_replace('/&t=([0-9]*[msh])+/', '', $url);
 
         $baseUrl = 'https://www.youtube.com/embed/';

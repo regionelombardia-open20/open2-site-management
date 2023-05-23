@@ -65,13 +65,15 @@ class SiteManagementSliderElemController extends CrudController
         ]);
 
         parent::init();
+
+
     }
 
     /**
      * Lists all SiteManagementSliderElem models.
      * @return mixed
      */
-    public function actionIndex($layout = NULL) 
+    public function actionIndex($layout = NULL)
     {
         Url::remember();
         $this->setDataProvider($this->getModelSearch()->search(Yii::$app->request->getQueryParams()));
@@ -99,9 +101,9 @@ class SiteManagementSliderElemController extends CrudController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null)
+    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $slider_type = null, $onlyImages = false, $onlyVideos = false)
     {
-        $module       = \Yii::$app->getModule('sitemanagement');
+        $module = \Yii::$app->getModule('sitemanagement');
         $this->setUpLayout("form");
 
         $files  = [];
@@ -109,16 +111,32 @@ class SiteManagementSliderElemController extends CrudController
         if (empty($slider)) {
             throw new NotFoundHttpException('Forbidden');
         }
-        $model            = new SiteManagementSliderElem;
-        $model->slider_id = $slider->id;
-        $lastOrder        = $slider->getLastElementOrder();
-        $model->order     = $lastOrder + 1;
+
+
+        $orderByLastInsert = false;
+
         if ($module) {
-            $files = $module->getFileNamesDirectoryForUploadVideo();
+            $orderByLastInsert = $module->orderContentByLastInsert;
+            $files             = $module->getFileNamesDirectoryForUploadVideo();
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        $model = new SiteManagementSliderElem;
+
+        $model->slider_id = $slider->id;
+        if($slider_type){
+            $model->type = $slider_type;
+        }
+        $lastOrder = 0;
+
+        if ($orderByLastInsert == false) {
+            $lastOrder = $slider->getLastElementOrder();
+        }
+
+        $model->order = $lastOrder + 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {            
             if ($model->save()) {
+                $this->shiftElement($model->slider_id, $model->order, $model->id);
                 Yii::$app->getSession()->addFlash('success', Yii::t('amoscore', 'Item created'));
                 //redirect
                 if (empty($urlRedirect)) {
@@ -135,6 +153,8 @@ class SiteManagementSliderElemController extends CrudController
                         'files' => $files,
                         'useCrop' => $useCrop,
                         'ratioCrop' => $ratioCrop,
+                        'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
                 ]);
             }
         } else {
@@ -145,7 +165,48 @@ class SiteManagementSliderElemController extends CrudController
                     'files' => $files,
                     'useCrop' => $useCrop,
                     'ratioCrop' => $ratioCrop,
+                    'onlyImages' => $onlyImages,
+                    'onlyVideos' => $onlyVideos,
             ]);
+        }
+    }
+
+    /**
+     *
+     * @param integer $slider
+     * @param integer $order
+     * @param integer $my_id
+     * @param integer $old_order
+     * @param integer $new_order
+     * @param integer $value
+     */
+    protected function shiftElement($slider, $order, $my_id = null, $old_order = null, $value = 1)
+    {
+        $query = SiteManagementSliderElem::find()->andWhere(['slider_id' => $slider]);
+        if ($my_id !== null) {
+            $query->andWhere(['!=', 'id', $my_id]);
+        }
+        //pr($order, 'order');pr($value, 'value');
+        $allContents = $query->orderBy('order')->all();
+        foreach ($allContents as $v) {
+            if ($old_order !== null) {
+                if ($old_order < $order) {
+                    if ($v->order <= $order && $v->order > $old_order) {
+                        $v->order = $v->order - $value;
+                        $v->save(false);
+                    }
+                } else if ($old_order > $order) {
+                    if ($v->order >= $order && $v->order < $old_order) {
+                        $v->order = $v->order + $value;
+                        $v->save(false);
+                    }
+                }
+            } else {
+                if ($v->order >= $order) {                  
+                    $v->order = $v->order + $value;                   
+                    $v->save(false);
+                }
+            }
         }
     }
 
@@ -155,7 +216,7 @@ class SiteManagementSliderElemController extends CrudController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null)
+    public function actionUpdate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $onlyImages = false, $onlyVideos = false)
     {
         $files  = [];
         $module = \Yii::$app->getModule('sitemanagement');
@@ -164,14 +225,16 @@ class SiteManagementSliderElemController extends CrudController
         }
 
         $this->setUpLayout("form");
-        $model        = $this->findModel($id);
-        $slider       = SiteManagementSlider::findOne($model->slider_id);
+        $model    = $this->findModel($id);
+        $oldOrder = $model->order;
+        $slider   = SiteManagementSlider::findOne($model->slider_id);
         if (empty($slider)) {
             throw new NotFoundHttpException('Forbidden');
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->save()) {
+            $this->shiftElement($model->slider_id, $model->order, $model->id, $oldOrder);
                 Yii::$app->getSession()->addFlash('success', Yii::t('amoscore', 'Item updated'));
                 // redirect
                 if (empty($urlRedirect)) {
@@ -188,6 +251,8 @@ class SiteManagementSliderElemController extends CrudController
                         'files' => $files,
                         'useCrop' => $useCrop,
                         'ratioCrop' => $ratioCrop,
+                        'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
                 ]);
             }
         } else {
@@ -198,6 +263,8 @@ class SiteManagementSliderElemController extends CrudController
                     'files' => $files,
                     'useCrop' => $useCrop,
                     'ratioCrop' => $ratioCrop,
+                    'onlyImages' => $onlyImages,
+                        'onlyVideos' => $onlyVideos,
             ]);
         }
     }

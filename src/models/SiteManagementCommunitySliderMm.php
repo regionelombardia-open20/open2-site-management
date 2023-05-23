@@ -6,9 +6,8 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "site_management_slider".
  */
-class SiteManagementSlider extends \amos\sitemanagement\models\base\SiteManagementSlider
+class SiteManagementCommunitySliderMm extends \amos\sitemanagement\models\base\SiteManagementCommunitySliderMm
 {
     public function representingColumn()
     {
@@ -55,33 +54,7 @@ class SiteManagementSlider extends \amos\sitemanagement\models\base\SiteManageme
         $labels = self::attributeLabels();
 
         return [
-            [
-                'slug' => 'section_id',
-                'label' => $labels['section_id'],
-                'type' => 'integer'
-            ],
-            [
-                'slug' => 'title',
-                'label' => $labels['title'],
-                'type' => 'string'
-            ],
-            [
-                'slug' => 'description',
-                'label' => $labels['description'],
-                'type' => 'text'
-            ],
         ];
     }
 
-    /**
-     * @return int
-     */
-    public function getLastElementOrder()
-    {
-        $order = $this->getSliderElems()->max('site_management_slider_elem.order');
-        if (empty($order)) {
-            $order = 0;
-        }
-        return $order;
-    }
 }

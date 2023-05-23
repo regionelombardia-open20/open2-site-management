@@ -13,6 +13,8 @@ use kartik\select2\Select2;
  * @var yii\widgets\ActiveForm $form
  */
 
+
+$permissions = \amos\sitemanagement\utility\SiteManagementUtility::getEnabledPermissionsForUpdate();
 ?>
 
 <div class="site-management-slider-form col-xs-12 nop">
@@ -42,6 +44,17 @@ use kartik\select2\Select2;
             <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
         </div>
     </div>
+
+    <?php if(\Yii::$app->user->can('SITE_MANAGEMENT_ADMINISTRATOR') && !empty($permissions)){  ?>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <?= $form->field($model, 'permission')->widget(Select2::className(),[
+                        'data' => \amos\sitemanagement\utility\SiteManagementUtility::getEnabledPermissionsForUpdateWithLabel(),
+                        'options' => ['placeholder' => Module::t('amositemanagement', 'Seleziona...')]
+                ]) ?>
+            </div>
+        </div>
+    <?php } ?>
 
     <div class="col-lg-12 col-sm-12"><h3><?= Module::t('amossitemanagement', 'Elements') ?></h3></div>
     <div class="col-lg-12 col-sm-12">

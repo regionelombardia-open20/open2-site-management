@@ -5,6 +5,7 @@ namespace amos\sitemanagement\controllers\base;
 use amos\sitemanagement\models\search\SiteManagementSliderSearch;
 use amos\sitemanagement\models\SiteManagementSlider;
 use amos\sitemanagement\Module;
+use amos\sitemanagement\utility\SiteManagementUtility;
 use open20\amos\core\controllers\CrudController;
 use open20\amos\core\helpers\Html;
 use open20\amos\core\icons\AmosIcons;
@@ -12,6 +13,7 @@ use open20\amos\dashboard\controllers\TabDashboardControllerTrait;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
+use yii\web\ForbiddenHttpException;
 
 /**
  * SiteManagementSliderController implements the CRUD actions for SiteManagementSlider model.
@@ -136,6 +138,10 @@ class SiteManagementSliderController extends CrudController
     {
         $this->setUpLayout("form");
         $model = $this->findModel($id);
+
+        if(!\Yii::$app->user->can($model->permission)  && !\Yii::$app->user->can('SITE_MANAGEMENT_ADMINISTRATOR')){
+            throw new ForbiddenHttpException('Permesso negato');
+        }
 
         $dataProviderSliderElem = new ActiveDataProvider([
             'query' => $model->getSliderElems()->orderBy('order')

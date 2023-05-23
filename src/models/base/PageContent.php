@@ -52,7 +52,7 @@ class PageContent extends Record
         return [
             [['section_id'], 'required'],
             [['tag'], 'string', 'max' => 100],
-            [['title'], 'string', 'max' => 255],
+            [['title','permission'], 'string', 'max' => 255],
             [['content'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],

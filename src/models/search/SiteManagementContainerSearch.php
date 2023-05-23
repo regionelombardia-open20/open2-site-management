@@ -2,6 +2,7 @@
 
 namespace amos\sitemanagement\models\search;
 
+use amos\sitemanagement\utility\SiteManagementUtility;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -35,9 +36,28 @@ class SiteManagementContainerSearch extends SiteManagementContainer
         return $scope;
     }
 
+
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     * @throws \yii\base\InvalidConfigException
+     */
     public function search($params)
     {
+        $permissions = SiteManagementUtility::getEnabledPermissionsForUpdate();
         $query = SiteManagementContainer::find();
+
+        // if you don't set  in the platform the permission you can't filter for permission
+        if(!empty($permissions)){
+            if(!\Yii::$app->user->can('SITE_MANAGEMENT_ADMINISTRATOR')) {
+                $canModify = SiteManagementUtility::getPermissionUserCan($permissions);
+                $query->andWhere([
+                    'OR',
+                    ['permission' => $canModify],
+                    ['permission' => null],
+                ]);
+            }
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

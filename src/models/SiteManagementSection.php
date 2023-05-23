@@ -5,12 +5,33 @@ namespace amos\sitemanagement\models;
 use open20\amos\core\record\Record;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use open20\amos\seo\behaviors\SeoContentBehavior;
+use open20\amos\seo\interfaces\SeoModelInterface;
+use open20\amos\core\interfaces\ContentModelInterface;
 
 /**
  * This is the model class for table "site_management_section".
  */
-class SiteManagementSection extends \amos\sitemanagement\models\base\SiteManagementSection
+class SiteManagementSection extends \amos\sitemanagement\models\base\SiteManagementSection implements SeoModelInterface, ContentModelInterface 
 {
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(parent::behaviors(),
+            [ 
+                'SeoContentBehavior' => [
+                    'class' => SeoContentBehavior::className(),
+                    'titleAttribute' => 'name',
+                    'imageAttribute' => 'image',
+                    'defaultOgType' => 'article',
+                    'schema' => 'NewsArticle'
+                ]
+            ]);
+    }
+    
     public function representingColumn()
     {
         return [
@@ -113,5 +134,111 @@ class SiteManagementSection extends \amos\sitemanagement\models\base\SiteManagem
 
 //        pr($query->createCommand()->getRawSql());
         return $query;
+    }
+    
+        
+     /**
+     * @inheritdoc
+     */
+    public function getSchema() {
+        
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPublicatedFrom() {
+        return $this->created_at;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPublicatedAt() {
+        return $this->created_at;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCategory() {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCwhValidationStatuses() {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription($truncate) {
+        return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDraftStatus() {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGrammar() {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGridViewColumns() {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPluginWidgetClassname() {
+        return WidgetIconPrintareaDashboard::className();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getShortDescription() {
+        return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTitle() {
+        return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getToValidateStatus() {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValidatedStatus() {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValidatorRole() {
+        return null;
     }
 }

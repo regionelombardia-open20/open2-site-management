@@ -77,7 +77,7 @@ class m180731_152624_site_management_section_permissions extends AmosMigrationPe
 
             // ------------------
             [
-                'name' =>  '',
+                'name' =>  'SITEMANAGEMENTSLIDERELEM_CREATE',
                 'type' => Permission::TYPE_PERMISSION,
                 'description' => 'Permesso di CREATE sul model SiteManagementSliderElem',
                 'ruleName' => null,

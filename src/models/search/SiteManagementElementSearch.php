@@ -2,6 +2,9 @@
 
 namespace amos\sitemanagement\models\search;
 
+use amos\sitemanagement\models\SiteManagementContainer;
+use amos\sitemanagement\models\SiteManagementContainerElementMm;
+use amos\sitemanagement\utility\SiteManagementUtility;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -37,7 +40,31 @@ class SiteManagementElementSearch extends SiteManagementElement
 
     public function search($params)
     {
+        $permissions = SiteManagementUtility::getEnabledPermissionsForUpdate();
         $query = SiteManagementElement::find();
+
+        // if you don't set  in the platform the permission you can't filter for permission
+        if (!empty($permissions)) {
+            if (!\Yii::$app->user->can('SITE_MANAGEMENT_ADMINISTRATOR')) {
+                $canModify = SiteManagementUtility::getPermissionUserCan($permissions);
+                $a = SiteManagementContainerElementMm::find()
+                                ->joinWith('container')
+                                ->andWhere([
+                                    'OR',
+                                    ['site_management_container.permission' => $canModify],
+                                    ['site_management_container.permission' => null],
+                                ])->all();
+
+                $elementsIds = [];
+
+                foreach ($a as $elemMm) {
+                    $elementsIds [] = $elemMm->element_id;
+                }
+
+                $query->andWhere(['site_management_element.id' => $elementsIds]);
+            }
+        }
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

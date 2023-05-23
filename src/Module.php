@@ -11,6 +11,7 @@
 
 namespace amos\sitemanagement;
 
+use open20\amos\core\interfaces\CmsModuleInterface;
 use amos\sitemanagement\models\SiteManagementLanding;
 use amos\sitemanagement\models\SiteManagementLandingPubblication;
 use amos\sitemanagement\utility\SiteManagementUtility;
@@ -29,7 +30,8 @@ use yii\helpers\Url;
  * Class Module
  * @package amos\sitemanagement
  */
-class Module extends AmosModule implements ModuleInterface, BootstrapInterface
+
+class Module extends AmosModule implements ModuleInterface, BootstrapInterface, CmsModuleInterface
 {
     /**
      * @var string|boolean the layout that should be applied for views within this module. This refers to a view name
@@ -96,6 +98,22 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface
      * @var bool
      */
     public $enableTextSlider = true;
+
+    /**
+     * @var array
+     * // example 'PERMISSION' => 'Label'
+     * [
+     *    'ADMIN' => 'Admin',
+     *    'SITE_MANAGEMENT_REDACTOR' => 'Redactor',
+     * ]
+     */
+    public $enabledPermissionsForUpdate = [];
+
+    /**
+     * Order the contents starting from the last insert
+     * @var type $orderContentByLastInsert
+     */
+    public $orderContentByLastInsert = false;
 
     /**
      * @inheritdoc
@@ -168,6 +186,32 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface
     public static function beginCreateNewSessionKeyDateTime()
     {
         return 'beginCreateNewUrlDateTime_' . self::getModuleName();
+    }
+    
+    /**
+     * @return string
+     */
+    public static function externalPreviousUrlSessionKey()
+    {
+        return 'externalPreviousUrlSessionKey_' . self::getModuleName();
+    }
+    
+    /**
+     * @return string
+     */
+    public static function externalPreviousTitleSessionKey()
+    {
+        return 'externalPreviousTitleSessionKey_' . self::getModuleName();
+    }
+    
+    /**
+     * @param string $previousUrl
+     * @param string $previousTitle
+     */
+    public static function setExternalPreviousSessionKeys($previousUrl, $previousTitle)
+    {
+        \Yii::$app->session->set(self::externalPreviousTitleSessionKey(), $previousTitle);
+        \Yii::$app->session->set(self::externalPreviousUrlSessionKey(), $previousUrl);
     }
 
     /**
@@ -309,6 +353,20 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface
             $files[$directoryWeb.'/'.$filename] = $filename;
         }
         return $files;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getModelClassName() {
+        return models\SiteManagementSection::className();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getModelSearchClassName() {
+        return models\search\SiteManagementSectionSearch::className();
     }
 
 }

@@ -72,4 +72,46 @@ class SiteManagementUtility extends BaseObject
 //            return 'IT';
 //        }
     }
+
+
+    /**
+     * @return array|mixed
+     */
+    public static function getEnabledPermissionsForUpdateWithLabel(){
+        $permissions = [];
+        $module = \Yii::$app->getModule('sitemanagement');
+        if(\Yii::$app->getModule('sitemanagement')){
+            $permissions = $module->enabledPermissionsForUpdate;
+        }
+        return $permissions;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getEnabledPermissionsForUpdate(){
+        $onlyPermissions = [];
+        $permissions = self::getEnabledPermissionsForUpdateWithLabel();
+        if(!empty($permissions)){
+            foreach ($permissions as $permission => $label){
+                $onlyPermissions[]= $permission;
+            }
+        }
+
+        return $onlyPermissions;
+    }
+
+    /**
+     * @param $permissions
+     * @return array
+     */
+    public static function getPermissionUserCan($permissions){
+        $canModify = [];
+        foreach ($permissions as $permission){
+            if(\Yii::$app->user->can($permission)){
+                $canModify[]= $permission;
+            }
+        }
+        return $canModify;
+    }
 }

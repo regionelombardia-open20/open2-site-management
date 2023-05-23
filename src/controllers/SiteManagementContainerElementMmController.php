@@ -16,32 +16,30 @@ class SiteManagementContainerElementMmController extends base\SiteManagementCont
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         $behaviors = ArrayHelper::merge(parent::behaviors(), [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => [
-                            'order-container',
-                        ],
-                        'roles' => ['SITE_MANAGEMENT_ADMINISTRATOR']
+                    'access' => [
+                        'class' => AccessControl::className(),
+                        'rules' => [
+                            [
+                                'allow' => true,
+                                'actions' => [
+                                    'order-container',
+                                ],
+                                'roles' => ['SITE_MANAGEMENT_ADMINISTRATOR',
+                                    'SITE_MANAGEMENT_EDITOR']
+                            ],
+                        ]
                     ],
-
-                ]
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post', 'get']
-                ]
-            ]
+                    'verbs' => [
+                        'class' => VerbFilter::className(),
+                        'actions' => [
+                            'delete' => ['post', 'get']
+                        ]
+                    ]
         ]);
         return $behaviors;
     }
-
 
     /**
      * @param $id

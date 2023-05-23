@@ -23,7 +23,7 @@ use yii\helpers\Url;
  * Class SMPageContentWidget
  * @package amos\sitemanagement\widgets
  */
-class SMSliderWidget extends Widget
+class SMSliderWidgetBS4 extends Widget
 {
     /**
      * @var string $layout
@@ -140,7 +140,7 @@ class SMSliderWidget extends Widget
         $module = \Yii::$app->getModule('sitemanagement');
         if($module){
             if(empty($this->viewPath)){
-                $this->viewPath = $module->defaultSliderView;
+                $this->viewPath = '@vendor/amos/site-management/src/widgets/views/sliderBS4';
             }
         }
     }

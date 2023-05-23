@@ -41,7 +41,7 @@ class SiteManagementSlider extends \open20\amos\core\record\Record
         return [
             [['title'], 'required'],
             [['section_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
-            [['description','view_path'], 'string'],
+            [['description','view_path','permission'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['section_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteManagementSection::className(), 'targetAttribute' => ['section_id' => 'id']],
@@ -58,6 +58,7 @@ class SiteManagementSlider extends \open20\amos\core\record\Record
             'section_id' => Yii::t('amossitemanagement', 'Section'),
             'title' => Yii::t('amossitemanagement', 'Title'),
             'description' => Yii::t('amossitemanagement', 'Description'),
+            'permission' => Yii::t('amossitemanagement', 'Permission'),
             'created_at' => Yii::t('amossitemanagement', 'Created at'),
             'updated_at' => Yii::t('amossitemanagement', 'Updated at'),
             'deleted_at' => Yii::t('amossitemanagement', 'Deleted at'),

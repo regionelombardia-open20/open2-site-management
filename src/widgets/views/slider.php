@@ -7,16 +7,17 @@ use amos\sitemanagement\Module;
 use \amos\sitemanagement\models\SiteManagementSliderElem;
 
 $sliderElements = $slider->getSliderElems()->orderBy('order ASC')->all();
+
 ?>
  <div class="wrap-slider">
         <!--Carousel Wrapper-->
-        <div id="carouselHeader" class="carousel slide sitemanagement-carousel" data-ride="carousel">
+        <div id="<?= $key ?>" class="carousel slide sitemanagement-carousel" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <?php
                 if(count($sliderElements) > 1) {
                     for ($i = 0; $i < count($sliderElements); $i++) { ?>
-                        <li data-target="#carouselHeader" data-slide-to="<?= $i ?>"
+                        <li data-target="#<?= $key ?>" data-slide-to="<?= $i ?>"
                             class="<?= $i == 0 ? 'active' : '' ?>"></li>
                         <?php
                     }
@@ -46,11 +47,11 @@ $sliderElements = $slider->getSliderElems()->orderBy('order ASC')->all();
             </div>
             <!-- Left and right controls -->
             <?php   if(count($sliderElements) > 1) {?>
-                <a class="left carousel-control" href="#carouselHeader" data-slide="prev">
+                <a class="left carousel-control" href="#<?= $key ?>" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                     <span class="sr-only"><?= Module::tHtml('amossitemanagement', '#previous') ?></span>
                 </a>
-                <a class="right carousel-control" href="#carouselHeader" data-slide="next">
+                <a class="right carousel-control" href="#<?= $key ?>" data-slide="next">
                     <span class="glyphicon glyphicon-chevron-right"></span>
                     <span class="sr-only"><?= Module::tHtml('amossitemanagement', '#next') ?></span>
                 </a>

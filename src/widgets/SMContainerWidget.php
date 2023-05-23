@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Aria S.p.A.
  * OPEN 2.0
@@ -32,7 +31,6 @@ use yii\db\Expression;
  */
 class SMContainerWidget extends Widget
 {
-
     /**
      * @var string $tag
      */
@@ -47,9 +45,7 @@ class SMContainerWidget extends Widget
      * @var
      */
     private $viewPath;
-
     private $defaultLimit = 5;
-
     private $options;
 
     /**
@@ -134,19 +130,18 @@ class SMContainerWidget extends Widget
         $this->options = $options;
     }
 
-
     /**
      *
      */
-    public function configureViewPath(){
+    public function configureViewPath()
+    {
         $module = \Yii::$app->getModule('sitemanagement');
-        if($module){
-            if(empty($this->viewPath)){
+        if ($module) {
+            if (empty($this->viewPath)) {
                 $this->viewPath = $module->defaultContainerView;
             }
         }
     }
-
 
     /**
      * @inheritdoc
@@ -157,9 +152,9 @@ class SMContainerWidget extends Widget
 
         ModuleSiteManagementAsset::register($this->getView());
 
-        if($container){
+        if ($container) {
 
-            if($container->getSiteManageContElemPubblications()->count() > 0){
+            if ($container->getSiteManageContElemPubblications()->count() > 0) {
                 return $this->renderContainer($container);
             }
         }
@@ -180,13 +175,16 @@ class SMContainerWidget extends Widget
 
         $query = $container->getSiteManageContElemPubblications()
             ->innerJoinWith('siteManagementContainerElementMms')
-            ->orderBy('elem_order');
-        if(\Yii::$app->user->isGuest){
-            $lang = SiteManagementUtility::convertLanguage(\Yii::$app->language);
-            $elementMmClassname     = SiteManagementContainerElementMm::className();
-            $elementMmClassname     = addslashes($elementMmClassname);
-            $query2 = clone $query;
-            $query2->innerJoin('entitys_tags_mm', "entitys_tags_mm.record_id=site_management_container_element_mm.id AND entitys_tags_mm.classname='$elementMmClassname'")
+            ->select(['site_manage_cont_elem_pubblication.*', 'elem_order']);
+
+        $finalQuery = null;
+        if (\Yii::$app->user->isGuest) {
+            $lang               = SiteManagementUtility::convertLanguage(\Yii::$app->language);
+            $elementMmClassname = SiteManagementContainerElementMm::className();
+            $elementMmClassname = addslashes($elementMmClassname);
+            $query2             = clone $query;
+            $query2->innerJoin('entitys_tags_mm',
+                    "entitys_tags_mm.record_id=site_management_container_element_mm.id AND entitys_tags_mm.classname='$elementMmClassname'")
                 ->leftJoin('tag', 'entitys_tags_mm.tag_id = tag.id')
                 ->andWhere(['entitys_tags_mm.deleted_at' => null])
                 ->andWhere(['site_management_container_element_mm.deleted_at' => null])
@@ -204,22 +202,41 @@ class SMContainerWidget extends Widget
             ]);
 
             $query->andWhere(['NOT IN', 'site_management_container_element_mm.id', $query3]);
-            $query = $query4->union($query->createCommand()->rawSql);
+            $query      = $query4->union($query->createCommand()->rawSql);
+            $query->orderBy('elem_order');
+            $expression = new \yii\db\Expression("(".$query->createCommand()->rawSql.") as finalquery");
+            $finalQuery = (new \yii\db\Query)
+                ->select('*')
+                ->from($expression)
+                ->orderBy("finalquery.elem_order");
+        } else {
+            $query->orderBy('elem_order');
+        }
+        //pr($query->createCommand()->rawSql, 'prima');
+        if (!empty($finalQuery)) {
+            $query = $finalQuery;
+        }
+        //pr($query->createCommand()->rawSql, 'dopo');
+        if (!empty($container->element_limit) && empty($container->element_random)) {
+            $query->limit($container->element_limit);
         }
 
         /** @var  $pubblication SiteManageContElemPubblication */
-        foreach($query->all() as $pubblication){
-            if($this->checkPubblicationDate($pubblication) && $this->isVisibleToUser($pubblication)){
-                $elements []= $pubblication->siteManagementElement;
+        foreach ($query->all() as $pubblicationArray) {
+            $pubblication = SiteManageContElemPubblication::findOne($pubblicationArray['id']);
+            if ($this->checkPubblicationDate($pubblication) && $this->isVisibleToUser($pubblication)) {
+
+                $elements [] = $pubblication->siteManagementElement;
             }
         }
 
-        if($container->element_random) {
-            if(!empty($container->element_limit)) {
+        if ($container->element_random) {
+            if (!empty($container->element_limit)) {
                 $elements = $this->chooseRandomNElement($elements);
             }
         }
-        return $this->render($this->viewPath, ['container' => $container, 'elements' => $elements, 'options' => $this->options]);
+        return $this->render($this->viewPath,
+                ['container' => $container, 'elements' => $elements, 'options' => $this->options]);
     }
 
     /**
@@ -227,9 +244,10 @@ class SMContainerWidget extends Widget
      * @param bool $withValues
      * @return string
      */
-    public static function renderElementPreview($element){
+    public static function renderElementPreview($element)
+    {
         $module = \Yii::$app->getModule('sitemanagement');
-        if($module){
+        if ($module) {
             $containerView = $module->defaultContainerView;
             return \Yii::$app->getView()->render($containerView, ['elements' => [$element]]);
         }
@@ -239,54 +257,55 @@ class SMContainerWidget extends Widget
      * @param $template_id
      * @return string
      */
-    public static function renderTemplatePreview($template_id){
+    public static function renderTemplatePreview($template_id)
+    {
         $template = SiteManagementTemplate::findOne($template_id);
-        if($template) {
+        if ($template) {
             $element = new SiteManagementElement();
-            $module = \Yii::$app->getModule('sitemanagement');
+            $module  = \Yii::$app->getModule('sitemanagement');
             if ($module) {
                 $containerView = $module->defaultContainerView;
                 return \Yii::$app->getView()->render($containerView, ['elements' => [$element], 'template' => $template]);
-
             }
         }
         return '';
     }
-
 
     /**
      * Configure the array of value to render the elements with templates
      * @param $element SiteManagementElement
      * @return array
      */
-    public static function getWidgetValuesFromElement($element){
-        $module = \Yii::$app->getModule('sitemanagement');
+    public static function getWidgetValuesFromElement($element)
+    {
+        $module        = \Yii::$app->getModule('sitemanagement');
         $widgetsValues = [];
 
         // Values if an element is linked to Content Model
-        if(!empty($element->siteManagementTemplate->content_model) && !empty($module->getModuleOfContentModel($element->siteManagementTemplate->content_model))){
+        if (!empty($element->siteManagementTemplate->content_model) && !empty($module->getModuleOfContentModel($element->siteManagementTemplate->content_model))) {
             $classNameContent = $element->siteManagementTemplate->content_model;
-            $modelContent = $classNameContent::find()->andWhere(['id' => $element->content_model_id])->one();
-            if($modelContent){
-                $widgetsValues['title'] = $modelContent->getTitle();
+            $modelContent     = $classNameContent::find()->andWhere(['id' => $element->content_model_id])->one();
+            if ($modelContent) {
+                $widgetsValues['title']       = $modelContent->getTitle();
                 $widgetsValues['description'] = $modelContent->getShortDescription();
-                if($modelContent->getPublicatedFrom()){
+                if ($modelContent->getPublicatedFrom()) {
                     $widgetsValues['data'] = \Yii::$app->formatter->asDate($modelContent->getPublicatedFrom());
                 } else {
                     $widgetsValues['data'] = \Yii::$app->formatter->asDate($modelContent->getPublicatedFrom());
                 }
-                if($modelContent instanceof \open20\amos\core\interfaces\ModelImageInterface) {
+                if ($modelContent instanceof \open20\amos\core\interfaces\ModelImageInterface) {
                     $widgetsValues['image'] = $modelContent->getModelImageUrl('original', false);
                 }
 
                 $widgetsValues['link_forward'] = SMContainerWidget::getUrlContentModel($modelContent);
             }
-        // values if the element values are on the database and are inserted manually by the user
+            // values if the element values are on the database and are inserted manually by the user
         } else {
             $vals = $element->siteManagementContainerElemeFieldsVals;
             foreach ($vals as $val) {
                 if ($val->siteManagementFieldsType->type == 'file') {
-                    $widgetsValues[$val->siteManagementFieldsType->name] = !empty($val->getAttachFiles()) ? $val->getAttachFiles()->getWebUrl() : '';
+                    $widgetsValues[$val->siteManagementFieldsType->name] = !empty($val->getAttachFiles()) ? $val->getAttachFiles()->getWebUrl()
+                            : '';
                 } else {
                     $widgetsValues[$val->siteManagementFieldsType->name] = $val->value;
                 }
@@ -299,36 +318,36 @@ class SMContainerWidget extends Widget
      * @param $element
      * @return array
      */
-    public static function getWidgetExampleValuesFromTemplate($template){
+    public static function getWidgetExampleValuesFromTemplate($template)
+    {
         $widgetsValues = [];
-        $fields = $template->siteManagementFieldsTypes;
+        $fields        = $template->siteManagementFieldsTypes;
         foreach ($fields as $field) {
             if ($field->type == 'file') {
                 $widgetsValues[$field->name] = '/img/img_default.jpg';
             } else {
-                $widgetsValues[$field->name] = "{" . $field->name ."}";
+                $widgetsValues[$field->name] = "{".$field->name."}";
             }
         }
         return $widgetsValues;
     }
 
-
-
     /**
      * @param $pubblication SiteManageContElemPubblication
      * @return bool
      */
-    public function isVisibleToUser($pubblication){
+    public function isVisibleToUser($pubblication)
+    {
         $user_id = !empty(\Yii::$app->user->id) ? \Yii::$app->user->id : null;
-        if($pubblication->pubblication_type_id == 1){
+        if ($pubblication->pubblication_type_id == 1) {
             return true;
-        }else if($pubblication->pubblication_type_id == 2){
+        } else if ($pubblication->pubblication_type_id == 2) {
             $count = $pubblication->getUsers()->andWhere(['id' => $user_id])->count();
-            return $count >=1 ;
+            return $count >= 1;
         } else {
             $roles = $pubblication->siteManageContElemPubblicationClasses;
-            foreach ($roles as $role){
-                if(\Yii::$app->user->can($role->class)){
+            foreach ($roles as $role) {
+                if (\Yii::$app->user->can($role->class)) {
                     return true;
                 }
             }
@@ -340,28 +359,30 @@ class SMContainerWidget extends Widget
      * @param $pubblication SiteManageContElemPubblication
      * @return bool
      */
-    public function checkPubblicationDate($pubblication){
-        $today = new \DateTime();
+    public function checkPubblicationDate($pubblication)
+    {
+        $today     = new \DateTime();
         $startDate = null;
-        $endDate = null;
+        $endDate   = null;
 
-        if($pubblication->start_date){
+        if ($pubblication->start_date) {
             $startDate = new \DateTime($pubblication->start_date);
         }
 
-        if($pubblication->end_date){
+        if ($pubblication->end_date) {
             $endDate = new \DateTime($pubblication->end_date);
         }
 
         // if is not set a pubblication date is always visible
         // if is set only the start_date is visible from the date selected onward
         // if is set also the end-date check the complete interval
-        if($startDate && $today >= $startDate){
+        if ($startDate && $today >= $startDate) {
             // if the hoour of pubblication is not inside the time interval you connot visualize the element
-            if($pubblication->start_time && $pubblication->end_time && !(date('H:i:s') >= $pubblication->start_time && date('H:i:s') <= $pubblication->end_time)){
+            if ($pubblication->start_time && $pubblication->end_time && !(date('H:i:s') >= $pubblication->start_time && date('H:i:s')
+                <= $pubblication->end_time)) {
                 return false;
             }
-            if($endDate) {
+            if ($endDate) {
                 return ($today <= $endDate);
             }
             return true;
@@ -369,58 +390,56 @@ class SMContainerWidget extends Widget
         return true;
     }
 
-
     /**
      * @param $elements
      * @return array
      */
-    public function chooseRandomNElement($elements){
+    public function chooseRandomNElement($elements)
+    {
         $selectedElements = [];
-        $container = $this->model;
-        $max_elements = $container->element_limit;
-        if(empty($max_elements)){
+        $container        = $this->model;
+        $max_elements     = $container->element_limit;
+        if (empty($max_elements)) {
             $max_elements = $this->defaultLimit;
         }
-        if(count($elements) <= $max_elements){
+        if (count($elements) <= $max_elements) {
             return $elements;
         }
 
-        if($max_elements == 1){
-            $rand_keys = rand(0, count($elements)-1);
-        }else {
+        if ($max_elements == 1) {
+            $rand_keys = rand(0, count($elements) - 1);
+        } else {
             $rand_keys = array_rand($elements, $max_elements);
         }
 
-        if(is_numeric($rand_keys)){
-            $selectedElements [] =$elements[$rand_keys];
-        }else {
+        if (is_numeric($rand_keys)) {
+            $selectedElements [] = $elements[$rand_keys];
+        } else {
             foreach ($rand_keys as $key) {
                 $selectedElements [] = $elements[$key];
             }
         }
-      return $selectedElements;
+        return $selectedElements;
     }
-
 
     /**
      * @param $modelContent
      * @return string
      */
-    public static function getUrlContentModel($modelContent){
+    public static function getUrlContentModel($modelContent)
+    {
         $classname = get_class($modelContent);
-        $module = \Yii::$app->getModule('sitemanagement');
-        if($module){
+        $module    = \Yii::$app->getModule('sitemanagement');
+        if ($module) {
             $key = array_search($classname, $module->contentModelsEnabled);
-            if($key){
-                if(!empty($module->urlDetailModelsEnabled[$key])){
+            if ($key) {
+                if (!empty($module->urlDetailModelsEnabled[$key])) {
                     return $module->urlDetailModelsEnabled[$key].'?id='.$modelContent->id;
                 }
             }
         }
-        if( $modelContent instanceof \open20\amos\core\interfaces\ViewModelInterface){
+        if ($modelContent instanceof \open20\amos\core\interfaces\ViewModelInterface) {
             return $modelContent->getFullViewUrl();
-        }
-        else return '';
+        } else return '';
     }
-
 }
