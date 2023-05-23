@@ -226,10 +226,10 @@ class SMSliderWidgetBS4 extends Widget
         //for youtube
         function onPlayerStateChange(event){
             if(event.data == YT.PlayerState.PLAYING){
-                 $('#$key').carousel('pause');
+                 $('#{$this->sliderId}').carousel('pause');
             }
             if(event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED){
-                $('#$key').carousel('cycle');
+                $('#{$this->sliderId}').carousel('cycle');
             }
         }
         
