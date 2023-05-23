@@ -7,6 +7,7 @@ use open20\amos\core\forms\Tabs;
 use kartik\select2\Select2;
 use open20\amos\attachments\components\CropInput;
 use yii\helpers\VarDumper;
+use yii\helpers\HtmlPurifier;
 
 /**
  * @var yii\web\View $this
@@ -201,12 +202,15 @@ if ($tipoElemento == 1):
     if ($enableTextSlider) { ?>
         <hr>
             <?php
-                if (isset($secImagesFields['link']['render']) && $secImagesFields['link']['render']):
+                $getTitle = HtmlPurifier::process(Yii::$app->request->get('slider_title'));
+                if (!empty($getTitle)):
+                    if (isset($secImagesFields['link']['render']) && $secImagesFields['link']['render']):
             ?>
         <div class="col-lg-6 col-sm-12">
             <?= $form->field($model, 'link')->textInput() ?>
         </div>
             <?php
+                    endif;
                 endif;
             ?>
 

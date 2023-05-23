@@ -27,7 +27,7 @@ class SiteManagementSliderController extends CrudController
         $this->initDashboardTrait();
 
         $this->setModelObj(new SiteManagementSlider());
-        $this->setModelSearch(new SiteManagementSliderSearch());
+        $this->setModelSearch(\amos\sitemanagement\Module::instance()->createModel('SiteManagementSliderSearch'));
 
         $this->setAvailableViews([
             'grid' => [

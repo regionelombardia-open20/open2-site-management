@@ -47,6 +47,7 @@ class SiteManagementSliderElem extends \open20\amos\core\record\Record
             [['slider_id','type'], 'required'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title', 'url_video', 'path_video'], 'string', 'max' => 255],
+            [['link'], 'url'],
         ];
     }
 
