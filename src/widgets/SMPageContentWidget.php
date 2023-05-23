@@ -13,6 +13,7 @@ namespace amos\sitemanagement\widgets;
 
 use amos\sitemanagement\exceptions\SiteManagementException;
 use amos\sitemanagement\models\PageContent;
+use amos\sitemanagement\models\SiteManagementSection;
 use yii\base\Widget;
 
 /**
@@ -32,6 +33,11 @@ class SMPageContentWidget extends Widget
     private $tag;
 
     /**
+     * @var string $tag
+     */
+    private $section;
+
+    /**
      * @var PageContent $model
      */
     private $model;
@@ -43,15 +49,21 @@ class SMPageContentWidget extends Widget
     {
         parent::init();
 
-        if (is_null($this->tag)) {
-            throw new SiteManagementException('SMPageContentWidget: missing tag');
-        }
+//        if (is_null($this->tag)) {
+//            throw new SiteManagementException('SMPageContentWidget: missing tag');
+//        }
+//
+//        if (!is_string($this->tag)) {
+//            throw new SiteManagementException('SMPageContentWidget: tag is not a string');
+//        }
 
-        if (!is_string($this->tag)) {
-            throw new SiteManagementException('SMPageContentWidget: tag is not a string');
+        $section = SiteManagementSection::find()->andWhere(['name' => $this->section])->one();
+        if($section){
+            $this->model = PageContent::findOne(['section_id' => $section->id]);
+        //for retrocompatibility
+        }else {
+            $this->model = PageContent::findOne(['tag' => $this->tag]);
         }
-
-        $this->model = PageContent::findOne(['tag' => $this->tag]);
     }
 
     /**
@@ -77,6 +89,25 @@ class SMPageContentWidget extends Widget
     {
         $this->tag = $tag;
     }
+
+    /**
+     * @param string $section
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSection()
+    {
+        return $this->section;
+    }
+
+
+
 
     /**
      * @inheritdoc

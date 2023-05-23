@@ -59,9 +59,9 @@ class DefaultController extends DashboardController
      */
     public function actionIndex($oldDashboard = null)
     {
-        if (is_null($oldDashboard)) {
-            return $this->redirect(['/sitemanagement/page-content/index']);
-        }
+//        if (is_null($oldDashboard)) {
+//            return $this->redirect(['/sitemanagement/page-content/index']);
+//        }
         Url::remember();
         $params = ['currentDashboard' => $this->getCurrentDashboard()];
         return $this->render('index', $params);

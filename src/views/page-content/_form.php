@@ -49,14 +49,15 @@ $idTabCard = 'tab-card';
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-lg-6 col-sm-6">
-            <?= $form->field($model, 'tag')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'section_id')->widget(\kartik\select2\Select2::className(),[
+                'data' => \yii\helpers\ArrayHelper::map(\amos\sitemanagement\models\SiteManagementSection::getAvailableSections($model)->all(), 'id', 'name'),
+            ]) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <?= $form->field($model, 'content')->widget(Redactor::className(), [
+            <?= $form->field($model, 'content')->widget(\open20\amos\core\forms\TextEditorWidget::className(), [
                 'clientOptions' => [
-                    'plugins' => ['clips', 'fontcolor', 'imagemanager'],
                     'lang' => substr(Yii::$app->language, 0, 2)
                 ]
             ]) ?>

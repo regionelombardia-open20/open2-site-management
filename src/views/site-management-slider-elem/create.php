@@ -1,0 +1,24 @@
+<?php
+
+use amos\sitemanagement\Module;
+
+/**
+ * @var yii\web\View $this
+ * @var \amos\sitemanagement\models\SiteManagementSliderElem $model
+ * @var $slider \amos\sitemanagement\models\SiteManagementSlider
+ */
+ 
+$this->title = Yii::t('amossitemanagement', 'Create slider element') . ' "' . $slider->title . '"';
+$this->params['breadcrumbs'][] = ['label' => Module::t('amossitemanagement', 'Site Management Slider Elem'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="site-management-slider-elem-create">
+    <?= $this->render('_form', [
+        'model' => $model,
+        'slider' => $slider,
+        'files' => $files,
+        'useCrop' => $useCrop,
+        'ratioCrop' => $ratioCrop,
+    ]) ?>
+
+</div>

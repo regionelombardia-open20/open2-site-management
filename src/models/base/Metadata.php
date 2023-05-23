@@ -13,6 +13,7 @@ namespace amos\sitemanagement\models\base;
 
 use amos\sitemanagement\Module;
 use open20\amos\core\record\Record;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Metadata
@@ -64,7 +65,7 @@ class Metadata extends Record
      */
     public function attributeLabels()
     {
-        return [
+        return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Module::t('amossitemanagement', 'ID'),
             'key_value' => Module::t('amossitemanagement', 'Key'),
             'content' => Module::t('amossitemanagement', 'Content'),
@@ -76,7 +77,7 @@ class Metadata extends Record
             'created_by' => Module::t('amoscore', '#created_by'),
             'updated_by' => Module::t('amoscore', '#updated_by'),
             'deleted_by' => Module::t('amoscore', '#deleted_by')
-        ];
+        ]);
     }
 
     /**

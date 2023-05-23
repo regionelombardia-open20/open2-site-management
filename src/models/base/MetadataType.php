@@ -13,6 +13,7 @@ namespace amos\sitemanagement\models\base;
 
 use amos\sitemanagement\Module;
 use open20\amos\core\record\Record;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class MetadataType
@@ -51,10 +52,10 @@ class MetadataType extends Record
      */
     public function attributeLabels()
     {
-        return [
+        return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Module::t('amossitemanagement', 'ID'),
             'type' => Module::t('amossitemanagement', 'Type')
-        ];
+        ]);
     }
 
     /**

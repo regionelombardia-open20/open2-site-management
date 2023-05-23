@@ -26,6 +26,7 @@ use yii\helpers\Url;
  * PageContentController implements the CRUD actions for PageContent model.
  *
  * @property \amos\sitemanagement\models\PageContent $model
+ * @property \amos\sitemanagement\models\search\PageContentSearch $modelSearch
  *
  * @package amos\sitemanagement\controllers\base
  */
@@ -35,11 +36,6 @@ class PageContentController extends CrudController
      * Trait used for initialize the tab dashboard
      */
     use TabDashboardControllerTrait;
-
-    /**
-     * @var array $viewGrid
-     */
-    protected $viewGrid;
 
     /**
      * @inheritdoc
@@ -108,9 +104,9 @@ class PageContentController extends CrudController
     {
         $this->setCreateNewBtnLabel();
         $this->setUpLayout('list');
-        if ($setCurrentDashboard) {
-            $this->view->params['currentDashboard'] = $this->getCurrentDashboard();
-        }
+//        if ($setCurrentDashboard) {
+//            $this->view->params['currentDashboard'] = $this->getCurrentDashboard();
+//        }
         Yii::$app->session->set(Module::beginCreateNewSessionKey(), Url::previous());
         Yii::$app->session->set(Module::beginCreateNewSessionKeyDateTime(), date('Y-m-d H:i:s'));
     }
@@ -128,6 +124,7 @@ class PageContentController extends CrudController
      * Lists all models.
      * @param string|null $layout
      * @return string
+     * @throws \yii\web\NotFoundHttpException
      */
     public function actionIndex($layout = null)
     {
@@ -144,7 +141,8 @@ class PageContentController extends CrudController
     /**
      * Displays a single model.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
+     * @throws \yii\web\NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -162,7 +160,7 @@ class PageContentController extends CrudController
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -188,7 +186,8 @@ class PageContentController extends CrudController
      * Updates an existing model.
      * If update is successful, the browser will be redirected to the 'list' page.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
+     * @throws \yii\web\NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -215,7 +214,6 @@ class PageContentController extends CrudController
      * If deletion is successful, the browser will be redirected to the previous list page.
      * @param int $id
      * @return \yii\web\Response
-     * @throws \Exception
      * @throws \yii\db\StaleObjectException
      * @throws \yii\web\NotFoundHttpException
      */

@@ -26,6 +26,7 @@ use yii\helpers\Url;
  * MetadataController implements the CRUD actions for Metadata model.
  *
  * @property \amos\sitemanagement\models\Metadata $model
+ * @property \amos\sitemanagement\models\search\MetadataSearch $modelSearch
  *
  * @package amos\sitemanagement\controllers\base
  */
@@ -35,11 +36,6 @@ class MetadataController extends CrudController
      * Trait used for initialize the tab dashboard
      */
     use TabDashboardControllerTrait;
-
-    /**
-     * @var array $viewGrid
-     */
-    protected $viewGrid;
 
     /**
      * @inheritdoc
@@ -108,9 +104,9 @@ class MetadataController extends CrudController
     {
         $this->setCreateNewBtnLabel();
         $this->setUpLayout('list');
-        if ($setCurrentDashboard) {
-            $this->view->params['currentDashboard'] = $this->getCurrentDashboard();
-        }
+//        if ($setCurrentDashboard) {
+//            $this->view->params['currentDashboard'] = $this->getCurrentDashboard();
+//        }
         Yii::$app->session->set(Module::beginCreateNewSessionKey(), Url::previous());
         Yii::$app->session->set(Module::beginCreateNewSessionKeyDateTime(), date('Y-m-d H:i:s'));
     }

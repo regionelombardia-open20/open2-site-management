@@ -13,6 +13,7 @@ namespace amos\sitemanagement\models\base;
 
 use amos\sitemanagement\Module;
 use open20\amos\core\record\Record;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class PageContent
@@ -20,6 +21,7 @@ use open20\amos\core\record\Record;
  * This is the base-model class for table "site_management_page_content".
  *
  * @property integer $id
+ * @property integer $section_id
  * @property string $tag
  * @property string $title
  * @property string $content
@@ -48,8 +50,7 @@ class PageContent extends Record
     public function rules()
     {
         return [
-            [['tag'], 'required'],
-            [['tag'], 'unique'],
+            [['section_id'], 'required'],
             [['tag'], 'string', 'max' => 100],
             [['title'], 'string', 'max' => 255],
             [['content'], 'string'],
@@ -63,9 +64,10 @@ class PageContent extends Record
      */
     public function attributeLabels()
     {
-        return [
+        return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Module::t('amossitemanagement', 'ID'),
             'tag' => Module::t('amossitemanagement', 'Tag'),
+            'section_id' => Module::t('amossitemanagement', 'Section'),
             'title' => Module::t('amossitemanagement', 'Page Title'),
             'content' => Module::t('amossitemanagement', 'Page Content'),
             'created_at' => Module::t('amoscore', '#created_at'),
@@ -74,6 +76,14 @@ class PageContent extends Record
             'created_by' => Module::t('amoscore', '#created_by'),
             'updated_by' => Module::t('amoscore', '#updated_by'),
             'deleted_by' => Module::t('amoscore', '#deleted_by')
-        ];
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSection()
+    {
+        return $this->hasOne(\amos\sitemanagement\models\SiteManagementSection::className(), ['id' => 'section_id']);
     }
 }

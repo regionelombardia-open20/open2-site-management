@@ -13,13 +13,13 @@ namespace amos\sitemanagement\utility;
 
 use amos\sitemanagement\models\Metadata;
 use amos\sitemanagement\models\MetadataTypeOpt;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Class SiteManagementUtility
  * @package amos\sitemanagement\utility
  */
-class SiteManagementUtility extends Object
+class SiteManagementUtility extends BaseObject
 {
     /**
      * This method register all metadata in the application.
@@ -35,5 +35,41 @@ class SiteManagementUtility extends Object
                 'content' => $metadata->content
             ]);
         }
+    }
+
+    /**
+     * @param $appLanguage
+     * @return string
+     */
+    public static function convertLanguage($appLanguage){
+        $language = \Yii::$app->language;
+        $explode = explode('-', $language);
+        if(count($explode) == 2){
+            $language = $explode[0];
+        }else {
+            $language = 'it';
+        }
+        return $language;
+//
+//        if($appLanguage == 'it-IT'){
+//            return 'IT';
+//        }
+//        if($appLanguage == 'en-EN'){
+//            return 'EN';
+//        }
+//        if($appLanguage == 'es-ES'){
+//            return 'ES';
+//        }
+//        if($appLanguage == 'de-DE'){
+//            return 'DE';
+//        }
+//        if($appLanguage == 'fr-FR'){
+//            return 'fr';
+//        }
+//        if($appLanguage == 're-RU'){
+//            return 'RE';
+//        }else {
+//            return 'IT';
+//        }
     }
 }

@@ -35,4 +35,9 @@ return [
     'Site Management' => 'Site Management',
     'Tag' => 'Tag',
     'Type' => 'Type',
+    '#add_elements' => 'Add element',
+    '#preview'=> 'Preview',
+    '#modify_pubblication' => 'Modify pubblication',
+    '#next' => 'Next',
+    '#prev' => 'Previous'
 ];

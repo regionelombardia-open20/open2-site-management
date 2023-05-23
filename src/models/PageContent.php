@@ -41,7 +41,7 @@ class PageContent extends \amos\sitemanagement\models\base\PageContent implement
     {
         return [
             'title',
-            'tag',
+            'section.name',
             [
                 'class' => 'open20\amos\core\views\grid\ActionColumn'
             ]

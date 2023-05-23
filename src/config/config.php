@@ -19,6 +19,12 @@ return [
             'metadata' => [
                 'enable' => true
             ],
+            'site-management-element' => [
+                'enable' => true
+            ],
+            'site-management-container' => [
+                'enable' => true
+            ],
         ]
     ]
 ];

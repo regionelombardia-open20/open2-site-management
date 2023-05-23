@@ -35,4 +35,6 @@ return [
     'Site Management' => 'Site Management',
     'Tag' => 'Tag',
     'Type' => 'Type',
+    '#add_elements' => 'Add element'
+
 ];

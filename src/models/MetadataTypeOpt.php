@@ -11,13 +11,13 @@
 
 namespace amos\sitemanagement\models;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Class MetadataTypeOpt
  * @package amos\sitemanagement\models
  */
-class MetadataTypeOpt extends Object
+class MetadataTypeOpt extends BaseObject
 {
     /**
      * This method returns the correct metadata key value attribute to use in the registerMetadata function.

@@ -32,6 +32,7 @@ class WidgetIconSiteManagementDashboard extends WidgetIcon
         $this->setDescription(Module::t('amossitemanagement', 'Site Management'));
         $this->setIcon('linentita');
         $this->setUrl(['/sitemanagement']);
+        $this->enableDashboardModal();
         $this->setCode('SITE_MANAGEMENT_DASHBOARD');
         $this->setModuleName('sitemanagement');
         $this->setNamespace(__CLASS__);
