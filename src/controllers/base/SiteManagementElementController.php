@@ -25,7 +25,6 @@ use open20\amos\core\controllers\CrudController;
 use open20\amos\core\helpers\Html;
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\dashboard\controllers\TabDashboardControllerTrait;
-use function PHPSTORM_META\type;
 use Yii;
 use yii\base\DynamicModel;
 use yii\helpers\Url;

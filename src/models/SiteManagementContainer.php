@@ -49,8 +49,8 @@ class SiteManagementContainer extends \amos\sitemanagement\models\base\SiteManag
     }
 
     
-    public static function getEditFields() {
-        $labels = self::attributeLabels();
+    public function getEditFields() {
+        $labels = $this->attributeLabels();
 
         return [
                                         [

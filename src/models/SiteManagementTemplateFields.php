@@ -48,8 +48,8 @@ class SiteManagementTemplateFields extends \amos\sitemanagement\models\base\Site
     }
 
 
-    public static function getEditFields() {
-        $labels = self::attributeLabels();
+    public function getEditFields() {
+        $labels = $this->attributeLabels();
 
         return [
                                         [

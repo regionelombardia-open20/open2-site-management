@@ -67,9 +67,14 @@ class SiteManagementSliderElem extends \amos\sitemanagement\models\base\SiteMana
 
     public function rules()
     {
-        return ArrayHelper::merge(parent::rules(), [
+        $rules = ArrayHelper::merge(parent::rules(), [
             [['fileImage'], 'file'],
         ]);
+        $module = \Yii::$app->getModule('sitemanagement');
+        if($module) {
+            $rules = ArrayHelper::merge($rules, $module->siteManagementSliderElemAddRules);
+        }
+        return $rules;
     }
 
     public function attributeLabels()
@@ -82,9 +87,9 @@ class SiteManagementSliderElem extends \amos\sitemanagement\models\base\SiteMana
     }
 
 
-    public static function getEditFields()
+    public function getEditFields()
     {
-        $labels = self::attributeLabels();
+        $labels = $this->attributeLabels();
 
         return [
             [

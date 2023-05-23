@@ -162,6 +162,12 @@ class Module extends AmosModule implements ModuleInterface, BootstrapInterface, 
     public $orderContentByLastInsert = false;
 
     /**
+     * @example [[['fileImage'], 'required'], ...]
+     * @var array
+     */
+    public $siteManagementSliderElemAddRules = [];
+
+    /**
      * @inheritdoc
      */
     public static function getModuleName() {

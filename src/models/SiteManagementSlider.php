@@ -50,9 +50,9 @@ class SiteManagementSlider extends \amos\sitemanagement\models\base\SiteManageme
     }
 
 
-    public static function getEditFields()
+    public function getEditFields()
     {
-        $labels = self::attributeLabels();
+        $labels = $this->attributeLabels();
 
         return [
             [

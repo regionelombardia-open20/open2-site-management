@@ -72,9 +72,9 @@ class SiteManagementSection extends \amos\sitemanagement\models\base\SiteManagem
     }
 
 
-    public static function getEditFields()
+    public function getEditFields()
     {
-        $labels = self::attributeLabels();
+        $labels = $this->attributeLabels();
 
         return [
             [

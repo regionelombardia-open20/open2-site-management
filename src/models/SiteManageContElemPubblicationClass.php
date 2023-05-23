@@ -48,8 +48,8 @@ class SiteManageContElemPubblicationClass extends \amos\sitemanagement\models\ba
     }
 
     
-    public static function getEditFields() {
-        $labels = self::attributeLabels();
+    public function getEditFields() {
+        $labels = $this->attributeLabels();
 
         return [
                                         [

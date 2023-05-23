@@ -55,9 +55,9 @@ class SiteManagementFieldsType extends \amos\sitemanagement\models\base\SiteMana
     }
 
 
-    public static function getEditFields()
+    public function getEditFields()
     {
-        $labels = self::attributeLabels();
+        $labels = $this->attributeLabels();
 
         return [
             [

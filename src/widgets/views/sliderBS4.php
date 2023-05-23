@@ -50,5 +50,5 @@ $sliderElements = $slider->getSliderElems()->orderBy('order ASC')->all();
                         }
     ?>
   </div>
-<?php endif; ?>
+<?php endif;
 
