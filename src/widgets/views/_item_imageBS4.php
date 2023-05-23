@@ -7,7 +7,7 @@
 
 <div class="it-single-slide-wrapper">
     <figure>
-        <img src="<?= (!empty($element->getFileImage())? $element->getFileImage()->getWebUrl() : "") ?>"  class="img-fluid" alt="immagine di galleria">
+        <img src="<?= (!empty($element->fileImage) ? $element->fileImage->getWebUrl() : "") ?>"  class="img-fluid" alt="immagine di galleria">
             <?php if (!empty($element->description)) { ?>
                 <figcaption class="figure-caption mt-2"><?= $element->description ?></figcaption>
             <?php } ?>  

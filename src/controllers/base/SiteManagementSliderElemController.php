@@ -101,7 +101,7 @@ class SiteManagementSliderElemController extends CrudController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $slider_type = null, $onlyImages = false, $onlyVideos = false)
+    public function actionCreate($id, $urlRedirect = null, $useCrop = null, $ratioCrop = null, $slider_type = null, $onlyImages = false, $onlyVideos = false, $onlyInstagramVideos = false)
     {
         $module = \Yii::$app->getModule('sitemanagement');
         $this->setUpLayout("form");
@@ -155,6 +155,7 @@ class SiteManagementSliderElemController extends CrudController
                         'ratioCrop' => $ratioCrop,
                         'onlyImages' => $onlyImages,
                         'onlyVideos' => $onlyVideos,
+                        'onlyInstagramVideos' => $onlyInstagramVideos
                 ]);
             }
         } else {
@@ -167,6 +168,7 @@ class SiteManagementSliderElemController extends CrudController
                     'ratioCrop' => $ratioCrop,
                     'onlyImages' => $onlyImages,
                     'onlyVideos' => $onlyVideos,
+                    'onlyInstagramVideos' => $onlyInstagramVideos
             ]);
         }
     }

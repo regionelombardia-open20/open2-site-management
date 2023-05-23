@@ -120,4 +120,6 @@ return [
     'Add video' => 'Aggiungi video',
     'Slider Video' => 'Slider Video',
     'Slider immagini' => 'Slider immagini',
+    'Instagram Video' => 'Video Instagram',
+    'Instagram Video Caption' => 'Didascalia Video Instagram',
 ];

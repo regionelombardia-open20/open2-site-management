@@ -11,10 +11,6 @@ use yii\helpers\ArrayHelper;
  */
 class SiteManagementContainerElemFieldsVal extends \amos\sitemanagement\models\base\SiteManagementContainerElemFieldsVal
 {
-    public $attachFiles;
-
-    public $file;
-
     /**
      * Adding the file behavior
      */
@@ -92,29 +88,5 @@ class SiteManagementContainerElemFieldsVal extends \amos\sitemanagement\models\b
                 'type' => 'string'
             ],
         ];
-    }
-
-    /**
-     * @return File
-     */
-    public function getFile()
-    {
-        if (empty($this->file)) {
-            $query = $this->hasOneFile('file');
-            $this->file = $query->one();
-        }
-        return $this->file;
-    }
-
-    /**
-     * @return File[]
-     */
-    public function getAttachFiles()
-    {
-        if (empty($this->attachFiles)) {
-            $query = $this->hasOneFile('attachFiles');
-            $this->attachFiles = $query->one();
-        }
-        return $this->attachFiles;
     }
 }

@@ -96,7 +96,7 @@ $permissions = \amos\sitemanagement\utility\SiteManagementUtility::getEnabledPer
 
                     ],
                     'title',
-                    'description',
+                    'description:html',
                     [
                         'class' => \open20\amos\core\views\grid\ActionColumn::className(),
                         'controller' => 'site-management-slider-elem',

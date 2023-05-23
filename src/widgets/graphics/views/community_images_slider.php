@@ -56,7 +56,7 @@ if (!is_null($communityId)) {
         <div class="row flexbox flex-wrap m-t-25">
             <?php
                 foreach ($slider->getSliderElems()->orderBy('order')->all() as $slider) {
-                    $img = $slider->getFileImage();
+                    $img = $slider->fileImage;
                     if(!is_null($img)){
                         if(!empty($slider->link)){
                             echo '<div class="col-md-4 col-sm-6 m-b-25"><a href="' . $slider->link . '" title="Vai alla pagina"><img src="' . $img->getWebUrl() . '" class="img-responsive" title="' . $slider->title . '"></a><div>' . $slider->description . '</div></div>';

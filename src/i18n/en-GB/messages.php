@@ -48,4 +48,7 @@ return [
     'Add video' => 'Add video', 
     'Slider Video' => 'Video slider',
     'Slider immagini' => 'Image slider',
+    'Inserisci l\'URL del video Instagram' => 'Enter the URL of the Instagram video',
+    'Aggiungi un video Instagram alla Galleria di' => 'Add an Instagram video to the Gallery of',
+    'Includi didascalia' =>'Include caption'
 ];

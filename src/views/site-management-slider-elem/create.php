@@ -15,6 +15,8 @@ if($tipoElemento == 1) {
     $this->title = (!empty($getTitle))? $getTitle: Yii::t('amossitemanagement', 'Aggiungi un\'immagine alla Galleria di') . ' "' . $slider->title . '"';
 } else if($tipoElemento == 2) {
     $this->title = (!empty($getTitle))? $getTitle: Yii::t('amossitemanagement', 'Aggiungi un video alla Galleria di') . ' "' . $slider->title . '"';
+} else if($tipoElemento == 3) {
+    $this->title = Yii::t('amossitemanagement', 'Aggiungi un video Instagram alla Galleria di') . ' "' . $slider->title . '"';
 } else {
     $this->title = (!empty($getTitle))? $getTitle: Yii::t('amossitemanagement', 'Create slider element') . ' "' . $slider->title . '"';
 }
@@ -36,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'ratioCrop' => $ratioCrop,
         'onlyImages' => $onlyImages,
         'onlyVideos' => $onlyVideos,
+        'onlyInstagramVideos' => $onlyInstagramVideos
     ]) ?>
 
 </div>

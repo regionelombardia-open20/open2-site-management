@@ -82,6 +82,16 @@ class SiteManagementSliderController extends CrudController
         $this->setTitleAndBreadcrumbs(Module::t('amossitemanagement', 'Gli slider'));
         $this->setListViewsParams();
         $this->setDataProvider($this->getModelSearch()->search(Yii::$app->request->getQueryParams()));
+        
+        $this->view->params['titleSection'] = Module::t('amossitemanagement', 'Slider');
+
+        $this->view->params['labelCreate'] = Module::t('amossitemanagement', 'Crea');
+        $this->view->params['titleCreate'] = Module::t('amossitemanagement', 'Crea un nuovo slider');
+        $this->view->params['urlCreate']   = ['/sitemanagement/site-management-slider/create'];
+
+//        $this->view->params['labelLinkAll'] = Module::t('amossitemanagement', '');
+//        $this->view->params['titleLinkAll'] = Module::t('amossitemanagement', '');
+//        $this->view->params['urlLinkAll']   = '';
         return parent::actionIndex();
     }
 

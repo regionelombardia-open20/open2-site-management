@@ -8,6 +8,6 @@ $autoplay = (!empty($optionsVideo['autoplay']) && $optionsVideo['autoplay']) ? '
             <source src="<?=$element->path_video?>" type="video/mp4">
         </video>
     <?php } else {?>
-        <iframe class="youtube-video" id="headerVideo<?=$element->id?>" style="width:100%; border:0;" src="<?=$element->urlEmbeddedVideo?>" allow="<?= $autoplay  ?> encrypted-media" <?= $fullscreen?>></iframe>
+        <iframe class="youtube-video" title="youtube video" id="headerVideo<?=$element->id?>" style="width:100%; border:0;" src="<?=$element->urlEmbeddedVideo?>" allow="<?= $autoplay  ?> encrypted-media" <?= $fullscreen?>></iframe>
     <?php }?>
 </div>

@@ -123,5 +123,46 @@ class SiteManagementSectionSearch extends \amos\sitemanagement\models\SiteManage
     public function cmsIsVisible($id) {
         return true;
     }
+    
+     public function cmsSearchSlider($params, $limit = null){
+         $dataProvider = $this->search($params, $limit = null);
+         
+//          if(!empty($this->sliderId)){
+//            $slider = SiteManagementSlider::findOne($this->sliderId);
+//            $this->model = $slider;
+//        } else {
+//			
+//			$this->sliderId = 'carouselHeader-' . substr(uniqid(), -3);
+//		
+//            if (is_null($this->section)) {
+//                throw new SiteManagementException('SMPageContentWidget: missing tag');
+//            }
+//
+//            if (!is_string($this->section)) {
+//                throw new SiteManagementException('SMPageContentWidget: tag is not a string');
+//            }
+//
+//            $section = SiteManagementSection::find()->andWhere(['name' => $this->section])->one();
+//            if (!empty($section)) {
+//                $slider = $section->siteManagementSlider;
+//                $this->model = $slider;
+//            }
+//        }
+        if (!empty($params["withPagination"])) {
+            $dataProvider->setPagination(['pageSize' => $limit]);
+            $dataProvider->query->limit(null);
+        } else {
+            $dataProvider->query->limit($limit);
+        }
+
+        if (!empty($params["conditionSearch"])) {
+            $commands = explode(";", $params["conditionSearch"]);
+            foreach ($commands as $command) {
+                $dataProvider->query->andWhere(eval("return " . $command . ";"));
+            }
+        }
+        pr($dataProvider->getTotalCount());
+        return $dataProvider;
+    }
 
 }
